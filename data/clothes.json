@@ -1,0 +1,137 @@
+{
+  "_help": "Edit this file, then run: npm run db:import. Prices are in normal money (priceNgn 17000 = N17,000, priceUsd 13 = $13). Photos live in the website's public folder: write them as /FileName.png (capital letters must match exactly). sizes [] = one size. stock = how many of EACH size per style.",
+  "defaultSizes": ["S", "M", "L", "XL"],
+  "defaultStock": 10,
+  "products": [
+    {
+      "slug": "gotne",
+      "name": "GOTNE",
+      "description": "From the ZUEZ Rebirth drop. Made to be worn, charged to be seen.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 17000,
+      "priceUsd": 13,
+      "variants": [
+        { "label": "Black", "color": "#111111", "image": "/GOTNEblack1.png" },
+        { "label": "Black II", "color": "#111111", "image": "/GOTNEblack2.png" },
+        { "label": "White", "color": "#E8E4DC", "image": "/GOTNEwhite.png" }
+      ]
+    },
+    {
+      "slug": "gotne-chill-tone",
+      "name": "GOTNE Chill Tone",
+      "description": "The Chill Tone hoodie, in two colours. Soft tones, loud attitude.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 24000,
+      "priceUsd": 18,
+      "variants": [
+        { "label": "White", "color": "#E8E4DC", "image": "/GOTNEchillToneWhite.png" },
+        { "label": "Yellow", "color": "#F2C94C", "image": "/GOTNEchillToneYellow.png" }
+      ]
+    },
+    {
+      "slug": "zuez-rebirth",
+      "name": "ZUEZ Rebirth",
+      "description": "The Rebirth tee, in two styles. Made to be worn, charged to be seen.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 14000,
+      "priceUsd": 9,
+      "variants": [
+        { "label": "Aqua", "image": "/ZUEZrebirth1.png" },
+        { "label": "Multi", "image": "/ZUEZrebirth2.png" }
+      ]
+    },
+    {
+      "slug": "zuez-grit-headgear",
+      "name": "ZUEZ Grit Headgear",
+      "description": "Headgear for the ones who show up covered. One size.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 14500,
+      "priceUsd": 11,
+      "sizes": [],
+      "variants": [{ "label": "Default", "image": "/ZuezGritHeadgear.png" }]
+    },
+    {
+      "slug": "zuez-moon-touch",
+      "name": "ZUEZ Moon Touch",
+      "description": "The Moon Touch tee, in black and cream.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 17000,
+      "priceUsd": 12,
+      "variants": [
+        { "label": "Black", "color": "#111111", "image": "/ZuezMoonTouch1.png" },
+        { "label": "Cream", "color": "#E8DCC0", "image": "/ZuezMoonTouch2.png" }
+      ]
+    },
+    {
+      "slug": "zuez-gods-eye",
+      "name": "ZUEZ Gods Eye",
+      "description": "The Gods Eye tee, in cream and black.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 15000,
+      "priceUsd": 10,
+      "variants": [
+        { "label": "Cream", "color": "#E8DCC0", "image": "/ZuezGodsEye1.png" },
+        { "label": "Black", "color": "#111111", "image": "/ZuezGodsEye2.png" }
+      ]
+    },
+    {
+      "slug": "zuez-rebirth-hoodies",
+      "name": "ZUEZ Rebirth Hoodies",
+      "description": "The Rebirth hoodies, a full rack of colours.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 20000,
+      "priceUsd": 15,
+      "variants": [{ "label": "Default", "image": "/ZuezRebirthHoodies.png" }]
+    },
+    {
+      "slug": "zuez-ravaged-cargo",
+      "name": "ZUEZ Ravaged Cargo",
+      "description": "Ravaged cargo trousers, in pink and teal.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 22000,
+      "priceUsd": 16,
+      "variants": [
+        { "label": "Pink", "color": "#E58FB0", "image": "/ZeuzRavagedCargo1.png" },
+        { "label": "Teal", "color": "#4A9DB0", "image": "/ZeuzRavagedCargo2.png" }
+      ]
+    },
+    {
+      "slug": "zuez-soft-soul",
+      "name": "ZUEZ Soft Soul",
+      "description": "Soft Soul. Easy to wear, hard to forget.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 23000,
+      "priceUsd": 17,
+      "variants": [{ "label": "Default", "image": "/ZeuzSoftSoul1.png" }]
+    },
+    {
+      "slug": "zuez-rebirth-fleece",
+      "name": "ZUEZ Rebirth Fleece",
+      "description": "The Rebirth fleece, in a full rack of colours.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 30000,
+      "priceUsd": 22,
+      "variants": [{ "label": "Default", "image": "/ZeuzRebirthFleece.png" }]
+    },
+    {
+      "slug": "zuez-rebirth-xx-xii",
+      "name": "ZUEZ Rebirth XX-XII",
+      "description": "Rebirth XX-XII, the full rack.",
+      "category": "unisex",
+      "isNew": true,
+      "priceNgn": 25000,
+      "priceUsd": 18,
+      "variants": [{ "label": "Default", "image": "/ZeuzRebirthXX-XII.png" }]
+    }
+  ]
+}
