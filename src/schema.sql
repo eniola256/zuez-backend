@@ -83,3 +83,23 @@ ALTER TABLE shipping_zones ALTER COLUMN fee_usd DROP DEFAULT;
 
 -- one style per position per product (lets the importer update styles safely)
 CREATE UNIQUE INDEX IF NOT EXISTS uq_variants_position ON variants(product_id, position);
+
+-- ───────── payments ─────────
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_provider TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_ref TEXT;            -- the gateway's id for this payment
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS needs_attention TEXT;        -- a note for YOU when something needs a human
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS customer_email_sent_at TIMESTAMPTZ;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS owner_email_sent_at TIMESTAMPTZ;
+
+-- Every webhook we receive. The UNIQUE line is what stops a repeated
+-- webhook from being processed twice.
+CREATE TABLE IF NOT EXISTS payment_events (
+  id          SERIAL PRIMARY KEY,
+  provider    TEXT NOT NULL,
+  event_id    TEXT NOT NULL,
+  order_ref   TEXT,
+  type        TEXT,
+  payload     JSONB,
+  received_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (provider, event_id)
+);

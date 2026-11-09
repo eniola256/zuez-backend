@@ -61,7 +61,7 @@ try {
 
   if (wipe) {
     console.log("wiping clothes, stock and orders");
-    await client.query("TRUNCATE products, variants, stock, orders, order_items RESTART IDENTITY CASCADE");
+    await client.query("TRUNCATE products, variants, stock, orders, order_items, payment_events RESTART IDENTITY CASCADE");
   }
 
   for (const p of file.products) {

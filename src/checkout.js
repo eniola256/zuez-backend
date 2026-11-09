@@ -2,7 +2,7 @@ import { randomInt } from "node:crypto";
 import { pool } from "./db.js";
 
 export const MAX_QTY = 10;
-const HOLD_MINUTES = 15;
+const HOLD_MINUTES = 30;
 
 // Errors we want the customer to see (vs. real crashes, which stay hidden)
 export class CheckoutError extends Error {}
@@ -123,13 +123,26 @@ export async function createOrder(body) {
     }
 
     await client.query("COMMIT");
-    return { id: order.id, ref: order.ref, currency, subtotal, shippingFee: zone.fee, total };
+    return { id: order.id, ref: order.ref, currency, subtotal, shippingFee: zone.fee, total, customer, lines };
   } catch (e) {
     await client.query("ROLLBACK");
     throw e;
   } finally {
     client.release();
   }
+}
+
+// Put the stock of the given orders back on the shelf (call inside a transaction).
+export async function giveBackStock(client, orderIds) {
+  if (!orderIds.length) return;
+  await client.query(
+    `UPDATE stock s SET quantity = s.quantity + x.qty
+     FROM (SELECT variant_id, size, SUM(qty)::int AS qty
+           FROM order_items WHERE order_id = ANY($1::uuid[]) AND variant_id IS NOT NULL
+           GROUP BY variant_id, size) x
+     WHERE s.variant_id = x.variant_id AND s.size = x.size`,
+    [orderIds]
+  );
 }
 
 // Unpaid orders give their stock back after HOLD_MINUTES.
@@ -143,16 +156,7 @@ export async function releaseExpiredOrders(minutes = HOLD_MINUTES) {
        RETURNING id`,
       [minutes]
     );
-    if (rows.length) {
-      await client.query(
-        `UPDATE stock s SET quantity = s.quantity + x.qty
-         FROM (SELECT variant_id, size, SUM(qty)::int AS qty
-               FROM order_items WHERE order_id = ANY($1::uuid[]) AND variant_id IS NOT NULL
-               GROUP BY variant_id, size) x
-         WHERE s.variant_id = x.variant_id AND s.size = x.size`,
-        [rows.map((r) => r.id)]
-      );
-    }
+    await giveBackStock(client, rows.map((r) => r.id));
     await client.query("COMMIT");
     return rows.length;
   } catch (e) {
