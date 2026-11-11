@@ -2,7 +2,7 @@ import { randomInt } from "node:crypto";
 import { pool } from "./db.js";
 
 export const MAX_QTY = 10;
-const HOLD_MINUTES = 30;
+export const HOLD_MINUTES = 30;
 
 // Errors we want the customer to see (vs. real crashes, which stay hidden)
 export class CheckoutError extends Error {}

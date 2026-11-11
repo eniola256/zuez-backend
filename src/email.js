@@ -96,3 +96,25 @@ export async function sendOrderEmails(orderId) {
     }
   }
 }
+
+function shippedHtml(o, items) {
+  return wrap(`
+    <h2 style="margin:0 0 4px">Your order is on its way.</h2>
+    <p style="color:#555;margin:0 0 20px">ZUEZ order <b>${esc(o.ref)}</b> has been shipped to ${esc(o.city)}.</p>
+    ${o.tracking_note ? `<p style="background:#f4f4f4;padding:12px;line-height:1.5"><b>Delivery note:</b><br>${esc(o.tracking_note)}</p>` : ""}
+    <table style="width:100%;border-collapse:collapse;border-top:1px solid #ddd">${itemRows(items, o.currency)}</table>
+    <p style="color:#777;font-size:13px;margin-top:24px">Questions? Just reply to this email and quote ${esc(o.ref)}.</p>`);
+}
+
+// Tells the customer their order has shipped (once per order)
+export async function sendShippedEmail(orderId) {
+  const { rows: [o] } = await pool.query("SELECT * FROM orders WHERE id = $1", [orderId]);
+  if (!o || o.shipped_email_sent_at) return;
+  const { rows: items } = await pool.query("SELECT * FROM order_items WHERE order_id = $1 ORDER BY id", [orderId]);
+  try {
+    await sendMail({ to: o.email, subject: `Your ZUEZ order ${o.ref} has shipped`, html: shippedHtml(o, items) });
+    await pool.query("UPDATE orders SET shipped_email_sent_at = now() WHERE id = $1", [orderId]);
+  } catch (e) {
+    console.error("shipped email failed:", e.message);
+  }
+}

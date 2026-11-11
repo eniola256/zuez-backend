@@ -103,3 +103,10 @@ CREATE TABLE IF NOT EXISTS payment_events (
   received_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (provider, event_id)
 );
+CREATE INDEX IF NOT EXISTS idx_orders_payment_ref ON orders(payment_provider, payment_ref);
+
+-- ───────── admin: shipping progress ─────────
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipped_at TIMESTAMPTZ;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS delivered_at TIMESTAMPTZ;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS tracking_note TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS shipped_email_sent_at TIMESTAMPTZ;

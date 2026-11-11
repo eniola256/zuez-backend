@@ -2,9 +2,10 @@ import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { query } from "./db.js";
-import { createOrder, releaseExpiredOrders, CheckoutError } from "./checkout.js";
+import { createOrder, releaseExpiredOrders, CheckoutError, HOLD_MINUTES } from "./checkout.js";
 import { applyPaymentEvent, attachPayment, cancelOrder, getPublicOrder } from "./orders.js";
 import { getGateway, providerName, PaymentsOffError } from "./payments/index.js";
+import { admin } from "./admin.js";
 import { sign as mockSign } from "./payments/mock.js";
 
 const app = express();
@@ -72,6 +73,9 @@ app.get("/api/products", async (_req, res) => {
   }
 });
 
+// Owner admin (login + orders + clothes). Everything inside needs the owner token.
+app.use("/api/admin", admin);
+
 // Delivery options for the checkout form
 app.get("/api/shipping-zones", async (_req, res) => {
   try {
@@ -111,6 +115,7 @@ app.post("/api/checkout", checkoutLimit, async (req, res) => {
         customer: order.customer,
         successUrl: `${siteUrl()}/#/order/${order.ref}`,
         cancelUrl: `${siteUrl()}/#/checkout`,
+        holdMinutes: HOLD_MINUTES,
       });
     } catch (e) {
       console.error("gateway createPayment failed:", e.message);
